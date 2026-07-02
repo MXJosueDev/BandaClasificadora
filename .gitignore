@@ -10,7 +10,7 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Archivos pesados
-data/
+dataset/
 model/
 
 # Archivos del Sistema Operativo
