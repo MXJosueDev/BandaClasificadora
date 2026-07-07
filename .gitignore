@@ -19,3 +19,6 @@ Thumbs.db
 
 # Variables de entorno
 .env
+
+# Archivos de prueba
+test_videos/
