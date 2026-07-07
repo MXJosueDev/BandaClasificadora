@@ -1,0 +1,6 @@
+jitomate_inmaduro
+jitomate_maduro
+jitomate_medio_maduro
+platano_inmaduro
+platano_maduro
+platano_muy_maduro
