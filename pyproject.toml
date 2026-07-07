@@ -1,0 +1,12 @@
+[project]
+name = "ClasificadorFrutasVerduras"
+version = "0.1.0"
+description = "Proyecto que contiene tanto el notebook para entrenar el modelo como para ejecutarlo y enviar datos por serial"
+readme = "README.md"
+requires-python = "==3.12.*"
+dependencies = [
+    "ai-edge-litert>=2.1.6",
+    "numpy>=2.5.0",
+    "opencv-python>=4.13.0.92",
+    "tensorflow>=2.21.0",
+]
