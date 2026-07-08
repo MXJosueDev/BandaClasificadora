@@ -24,17 +24,26 @@ def main():
     # arduino = ArduinoCommunicator(port='COM3', baudrate=9600) # COM3 para windows
 
     # Captura de video/grabacion
-    cap = cv2.VideoCapture('./test_videos/3.mp4')
+    camera_input = input("Ingresa el índice de la cámara a usar (0 por defecto): ").strip()
+    camera_index = 0
+    if camera_input:
+        try:
+            camera_index = int(camera_input)
+        except ValueError:
+            print(f"Valor inválido '{camera_input}'. Se usará la cámara 0.")
+            camera_index = 0
+
+    cap = cv2.VideoCapture(camera_index)
     if not cap.isOpened():
-        print("Error al abrir el video.")
+        print(f"Error al abrir la cámara {camera_index}.")
         return
 
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fps_video = int(cap.get(cv2.CAP_PROP_FPS)) or 30
 
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v') 
-    out = cv2.VideoWriter('./test_videos/demo_frutas_3.mp4', fourcc, fps_video, (frame_width, frame_height))
+    # fourcc = cv2.VideoWriter_fourcc(*'mp4v') 
+    # out = cv2.VideoWriter('./test_videos/demo_frutas_3.mp4', fourcc, fps_video, (frame_width, frame_height))
 
     # Contador
     linea_conteo_x = frame_width // 2
@@ -113,14 +122,14 @@ def main():
             cv2.putText(frame, f"Inferencia: {avg_inference:.1f}ms", (20, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
             cv2.imshow('Frutas en Banda', frame)
-            out.write(frame)
+            # out.write(frame)
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
                 
     finally:
         cap.release()
-        out.release()
+        # out.release()
         cv2.destroyAllWindows()
         # arduino.close()
 
