@@ -17,9 +17,18 @@ from src.vision import MotionDetector
 from src.counter import ItemCounter
 from src.arduino_serial import ArduinoCommunicator
 
+def solve_route(relative_route):
+    """Devuelve la ruta absoluta, ya sea en desarrollo o compilado por PyInstaller."""
+    if hasattr(sys, '_MEIPASS'):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_route)
+
 def main():
     # Componentes
-    modelo = ModelInference(model_path="./model/model.tflite", labels_path="./model/labels.txt")
+    modelo = ModelInference(model_path=solve_route("./model/model.tflite"), labels_path=solve_route("./model/labels.txt"))
     vision = MotionDetector(min_area=3000)
     # arduino = ArduinoCommunicator(port='COM3', baudrate=9600) # COM3 para windows
 
@@ -59,6 +68,9 @@ def main():
     last_frame_time = time.perf_counter()
 
     print("Presiona la tecla 'q' para salir.")
+
+    # Para poder redimencionar la pantalla
+    cv2.namedWindow('Frutas en Banda', cv2.WINDOW_NORMAL)
 
     try:
         while True:

@@ -6,12 +6,14 @@ added_files = [
          ( 'model/labels.txt', 'model' ),
          ]
 
+hiddenimports = ['ai_edge_litert', 'ai_edge_litert.interpreter', 'serial']
+
 a = Analysis(
     ['scripts\\main.py'],
     pathex=[],
     binaries=[],
     datas=added_files,
-    hiddenimports=[],
+    hiddenimports=hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
