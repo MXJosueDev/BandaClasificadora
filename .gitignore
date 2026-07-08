@@ -25,5 +25,3 @@ test_videos/
 # Build & Dist
 build/
 dist/
-
-main.spec
