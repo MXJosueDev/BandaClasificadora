@@ -21,3 +21,9 @@ Thumbs.db
 
 # Archivos de prueba
 test_videos/
+
+# Build & Dist
+build/
+dist/
+
+main.spec

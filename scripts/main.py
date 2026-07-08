@@ -10,7 +10,7 @@ os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # Agregar raiz al path
-sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from src.inference import ModelInference
 from src.vision import MotionDetector
