@@ -8,5 +8,6 @@ dependencies = [
     "ai-edge-litert>=2.1.6",
     "numpy>=2.5.0",
     "opencv-python>=4.13.0.92",
+    "pyserial>=3.5",
     "tensorflow>=2.21.0",
 ]
