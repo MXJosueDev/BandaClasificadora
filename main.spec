@@ -1,15 +1,17 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+import os
+
 added_files = [
-         ( 'src/', 'src' ),
-         ( 'model/model.tflite', 'model' ),
-         ( 'model/labels.txt', 'model' ),
-         ]
+    (os.path.join('src'), 'src'),
+    (os.path.join('model', 'model.tflite'), 'model'),
+    (os.path.join('model', 'labels.txt'), 'model'),
+]
 
 hiddenimports = ['ai_edge_litert', 'ai_edge_litert.interpreter', 'serial']
 
 a = Analysis(
-    ['scripts\\main.py'],
+    [os.path.join('scripts', 'main.py')],
     pathex=[],
     binaries=[],
     datas=added_files,
