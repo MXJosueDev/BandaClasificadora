@@ -12,12 +12,12 @@ class ArduinoCommunicator:
             print(f"No se pudo conectar al Arduino en {port}. Error: {e}")
             self.ser = None
 
-    def enviar_fruta(self, nombre_clase):
+    def send_detection(self, class_name):
         """Envía el nombre de la clase detectada por serial."""
         if self.ser and self.ser.is_open:
-            mensaje = f"{nombre_clase}\n"
+            message = f"{class_name}\n"
             try:
-                self.ser.write(mensaje.encode('utf-8'))
+                self.ser.write(message.encode('utf-8'))
             except Exception as e:
                 print(f"Error al enviar datos: {e}")
                 
