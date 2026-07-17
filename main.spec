@@ -8,7 +8,7 @@ added_files = [
     (os.path.join('model', 'labels.txt'), 'model'),
 ]
 
-hiddenimports = ['ai_edge_litert', 'ai_edge_litert.interpreter', 'serial']
+hiddenimports = ['ai_edge_litert', 'ai_edge_litert.interpreter', 'serial', 'serial.tools', 'serial.tools.list_ports']
 
 a = Analysis(
     [os.path.join('scripts', 'main.py')],
