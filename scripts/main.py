@@ -32,7 +32,7 @@ def main():
     model = ModelInference(model_path=solve_route("./model/model.tflite"), labels_path=solve_route("./model/labels.txt"))
     vision = MotionDetector(min_area=3000)
     color_detector = ColorDetector(min_pixels=30)
-    # arduino = ArduinoCommunicator(port='COM3', baudrate=9600) # COM3 para windows
+    arduino = ArduinoCommunicator(baudrate=9600)
 
     # Captura de video/grabacion
     camera_input = input("Ingresa el índice de la cámara a usar (0 por defecto): ").strip()
@@ -109,7 +109,7 @@ def main():
                 # Actualizar conteo y enviar datos al arduino
                 count_now = counter.update_and_check(center_x, class_name)
                 if count_now:
-                    # arduino.enviar_fruta(nombre_clase)
+                    arduino.send_detection(class_name)
                     pass
 
                 # Dibujar bounding box y datos
@@ -130,7 +130,6 @@ def main():
 
             # Panel de conteo
             # ---------------
-            # Configuración de transparencia y panel
             alpha = 0.5 
             x_inicio = frame_width - 250 
 
@@ -172,7 +171,7 @@ def main():
         cap.release()
         # out.release()
         cv2.destroyAllWindows()
-        # arduino.close()
+        arduino.close()
 
 if __name__ == "__main__":
     main()
