@@ -1,3 +1,4 @@
+cubo
 jitomate_inmaduro
 jitomate_maduro
 jitomate_medio_maduro
