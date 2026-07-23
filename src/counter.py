@@ -9,7 +9,7 @@ class ItemCounter:
         self.previus_axis_center = None
         self.already_counted = False
 
-    def update_and_check(self, center_x, center_y, nombre_clase):
+    def update_and_check(self, center_x, center_y, class_name):
         """Evalúa si la fruta cruzó la línea. Retorna True si acaba de ser contada."""
         is_cut_now = False
         axis_center = center_x if self.orientation == "vertical" else center_y
@@ -28,7 +28,7 @@ class ItemCounter:
                 if (self.previus_axis_center < self.counting_line and axis_center >= self.counting_line) or \
                    (self.previus_axis_center > self.counting_line and axis_center <= self.counting_line):
                     
-                    self.class_counting[nombre_clase] += 1
+                    self.class_counting[class_name] += 1
                     self.already_counted = True
                     is_cut_now = True
 
