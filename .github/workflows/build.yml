@@ -20,8 +20,14 @@ jobs:
         include:
           - os: windows-latest
             artifact_name: windows-executable
+            original_file: main.exe 
+            os_suffix: windows
+            ext: .exe
           - os: macos-latest
             artifact_name: macos-executable
+            original_file: main
+            os_suffix: macos
+            ext: ""
 
     steps:
     - name: Checkout repository
@@ -42,6 +48,12 @@ jobs:
     - name: Build with PyInstaller
       run: |
         pyinstaller main.spec 
+
+    # NUEVO PASO: Renombrar el archivo generado
+    - name: Rename executable for Release
+      shell: bash
+      run: |
+        mv "dist/${{ matrix.original_file }}" "dist/BandaClasificadora-${{ github.ref_name }}-${{ matrix.os_suffix }}${{ matrix.ext }}"
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
