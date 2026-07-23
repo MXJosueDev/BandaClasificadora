@@ -34,6 +34,11 @@ def main():
     color_detector = ColorDetector(min_pixels=30)
     arduino = ArduinoCommunicator(baudrate=9600)
 
+    line_orientation_input = input("Tipo de linea de conteo (vertical/horizontal) [vertical]: ").strip().lower()
+    line_orientation = line_orientation_input if line_orientation_input in ("vertical", "horizontal") else "vertical"
+    if line_orientation_input and line_orientation_input not in ("vertical", "horizontal"):
+        print(f"Valor inválido '{line_orientation_input}'. Se usará la línea vertical.")
+
     # Captura de video/grabacion
     camera_input = input("Ingresa el índice de la cámara a usar (0 por defecto): ").strip()
     camera_index = 0
@@ -67,10 +72,11 @@ def main():
             class_names.append(clase)
 
     # Contador
-    counting_line_x = frame_width // 2
+    counting_line = (frame_width // 2) if line_orientation == "vertical" else (frame_height // 2)
     counter = ItemCounter(
         class_names=class_names, 
-        counting_line_x=counting_line_x, 
+        counting_line=counting_line,
+        orientation=line_orientation,
         margin_reset=100
     )
 
@@ -91,7 +97,7 @@ def main():
                 break
 
             # Detectar movimiento
-            has_movement, bbox, center_x = vision.detect(frame)
+            has_movement, bbox, center_x, center_y = vision.detect(frame)
 
             if has_movement:
                 roi, (x1, y1, x2, y2) = vision.get_roi(frame, bbox)
@@ -107,7 +113,7 @@ def main():
                     class_name = f"cubo_{color}"
 
                 # Actualizar conteo y enviar datos al arduino
-                count_now = counter.update_and_check(center_x, class_name)
+                count_now = counter.update_and_check(center_x, center_y, class_name)
                 if count_now:
                     arduino.send_detection(class_name)
                     pass
@@ -116,7 +122,7 @@ def main():
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
                 cv2.putText(frame, f"{class_name}: {confidence:.2f}", (x1, y1 - 10), 
                             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2, cv2.LINE_AA)
-                cv2.circle(frame, (center_x, bbox[1] + (bbox[3]//2)), 5, (0, 0, 255), -1)
+                cv2.circle(frame, (center_x, center_y), 5, (0, 0, 255), -1)
 
             else:
                 counter.reset_tracking()
@@ -124,9 +130,14 @@ def main():
                             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 165, 255), 2, cv2.LINE_AA)
 
             # Dibujar línea de conteo
-            cv2.line(frame, (counting_line_x, 0), (counting_line_x, frame_height), (0, 255, 255), 2)
-            cv2.line(frame, (counting_line_x - counter.margin_reset, 0), (counting_line_x - counter.margin_reset, frame_height), (255, 100, 100), 1)
-            cv2.line(frame, (counting_line_x + counter.margin_reset, 0), (counting_line_x + counter.margin_reset, frame_height), (255, 100, 100), 1)
+            if line_orientation == "vertical":
+                cv2.line(frame, (counting_line, 0), (counting_line, frame_height), (0, 255, 255), 2)
+                cv2.line(frame, (counting_line - counter.margin_reset, 0), (counting_line - counter.margin_reset, frame_height), (255, 100, 100), 1)
+                cv2.line(frame, (counting_line + counter.margin_reset, 0), (counting_line + counter.margin_reset, frame_height), (255, 100, 100), 1)
+            else:
+                cv2.line(frame, (0, counting_line), (frame_width, counting_line), (0, 255, 255), 2)
+                cv2.line(frame, (0, counting_line - counter.margin_reset), (frame_width, counting_line - counter.margin_reset), (255, 100, 100), 1)
+                cv2.line(frame, (0, counting_line + counter.margin_reset), (frame_width, counting_line + counter.margin_reset), (255, 100, 100), 1)
 
             # Panel de conteo
             # ---------------

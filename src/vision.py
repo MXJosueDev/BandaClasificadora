@@ -26,9 +26,10 @@ class MotionDetector:
         if largest_contour is not None:
             x, y, w, h = cv2.boundingRect(largest_contour)
             centro_x = x + (w // 2)
-            return True, (x, y, w, h), centro_x
+            centro_y = y + (h // 2)
+            return True, (x, y, w, h), centro_x, centro_y
             
-        return False, None, None
+        return False, None, None, None
 
     @staticmethod
     def get_roi(frame, bbox, padding=15):
