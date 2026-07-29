@@ -25,3 +25,6 @@ test_videos/
 # Build & Dist
 build/
 dist/
+
+# Lock
+uv.lock
