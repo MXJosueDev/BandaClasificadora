@@ -28,6 +28,3 @@ dist/
 
 # Lock
 uv.lock
-
-# Arduino config
-arduino/config.h
